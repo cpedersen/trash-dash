@@ -1,37 +1,43 @@
-/*const Login = (props) => {
-  return <div>Login</div>
-}
-*/
-
-import { loginUser } from '@/api/authApi'
-import { fetchUserDetails } from '@/api/userApi'
 import { useState } from 'react'
+import { createUser } from '@/api/authApi'
+import { createUserInDb } from '@/api/userApi'
 
-const Login = (props) => {
+type RegisterProps = {}
+
+const Register = (props: RegisterProps) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
   })
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }))
   }
 
-  const onLogin = async (e) => {
-    console.log('on login', e)
+  const prepareCreateUserInDbPayload = (user: firebase.default.User) => {
+    const { uid: id, displayName, email, photoURL } = user
+    return {
+      id,
+      displayName,
+      email,
+      emailVerified: false,
+      photoURL,
+    }
+  }
+
+  const onRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('on register', e)
     e.preventDefault()
     try {
       const { email, password } = form
-
-      // TODO - how get the user?
-      const { user } = await loginUser(email, password)
-      //const result = await createUserInDb(prepareCreateUserInDbPayload(user))
-      const { uid } = user
-      const userData = await fetchUserDetails(uid)
-      console.log({ user, userData })
+      const { user } = await createUser(email, password)
+      if (!user) throw new Error('There was a problem')
+      /* @ts-ignore */
+      const result = await createUserInDb(prepareCreateUserInDbPayload(user))
+      console.log({ user, result })
     } catch (error) {
       console.error(error)
     }
@@ -41,7 +47,7 @@ const Login = (props) => {
     <div className="w-full max-w-xs mx-auto container">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit={onLogin}
+        onSubmit={onRegister}
       >
         <div className="mb-4">
           <label
@@ -83,7 +89,7 @@ const Login = (props) => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Login
+            Register
           </button>
           <a
             className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
@@ -97,4 +103,4 @@ const Login = (props) => {
   )
 }
 
-export default Login
+export default Register

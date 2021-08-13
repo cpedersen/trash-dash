@@ -29,7 +29,7 @@ const functions = firebase.functions()
 const storage = firebase.storage()
 
 if (process.env.NODE_ENV === 'development') {
-  functions.useEmulator('localhost', '5001')
+  functions.useEmulator('localhost', 5001)
 }
 
 export { firestore, functions, storage, auth, firebase }

@@ -1,39 +1,48 @@
-import { useState } from 'react'
-import { createUser } from '@/api/authApi'
-import { createUserInDb } from '@/api/userApi'
+/*const Login = (props) => {
+  return <div>Login</div>
+}
+*/
 
-const Register = (props) => {
+import { loginUser } from '@/api/authApi'
+import { fetchUserDetails } from '@/api/userApi'
+import { useState } from 'react'
+import type { RootState } from '@/store'
+import type { User } from '@/types'
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '@/store/user/userSlice'
+import { useHistory } from 'react-router-dom'
+type LoginProps = {}
+
+const Login = (props: LoginProps) => {
+  const userState = useSelector((state: RootState) => state.user.user)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  console.log('user state', userState)
   const [form, setForm] = useState({
     email: '',
     password: '',
   })
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }))
   }
 
-  const prepareCreateUserInDbPayload = (user) => {
-    const { uid: id, displayName, email, emailVerified, photoURL } = user
-    return {
-      id,
-      displayName,
-      email,
-      emailVerified,
-      photoURL,
-    }
-  }
-
-  const onRegister = async (e) => {
-    console.log('on register', e)
+  const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('on login', e)
     e.preventDefault()
     try {
       const { email, password } = form
-      const { user } = await createUser(email, password)
-      const result = await createUserInDb(prepareCreateUserInDbPayload(user))
-      console.log({ user, result })
+      const { user } = await loginUser(email, password)
+      if (!user) throw new Error('There was an unexpected problem')
+      /*
+        const { uid } = user
+        const userData = (await fetchUserDetails(uid)) as User
+        console.log({ user, userData })
+        dispatch(setUser(userData))
+      */
     } catch (error) {
       console.error(error)
     }
@@ -43,7 +52,7 @@ const Register = (props) => {
     <div className="w-full max-w-xs mx-auto container">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit={onRegister}
+        onSubmit={onLogin}
       >
         <div className="mb-4">
           <label
@@ -85,7 +94,7 @@ const Register = (props) => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Register
+            Login
           </button>
           <a
             className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
@@ -99,4 +108,4 @@ const Register = (props) => {
   )
 }
 
-export default Register
+export default Login
