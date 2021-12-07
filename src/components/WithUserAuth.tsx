@@ -4,14 +4,14 @@ import { User } from '@/types'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/user/userSlice'
 import { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 type WithUserAuthProps = {
   children: React.ReactNode
 }
 
 console.log(auth)
 export const WithUserAuth = (props: WithUserAuthProps) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
@@ -31,13 +31,14 @@ export const WithUserAuth = (props: WithUserAuthProps) => {
           emailVerified,
         })
       )
-      history.push('/')
+      navigate('/')
     })
   }, [])
 
   return (
     <div>
-      {props.children} <button onClick={() => auth.signOut()}>Logout</button>
+      {props.children}
+      {/* <button onClick={() => auth.signOut()}>Logout</button> */}
     </div>
   )
 }

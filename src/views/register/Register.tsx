@@ -1,10 +1,16 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { createUser } from '@/api/authApi'
 import { createUserInDb } from '@/api/userApi'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/store/user/userSlice'
+import type { User } from '@/types'
 
 type RegisterProps = {}
 
 const Register = (props: RegisterProps) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -35,9 +41,12 @@ const Register = (props: RegisterProps) => {
       const { email, password } = form
       const { user } = await createUser(email, password)
       if (!user) throw new Error('There was a problem')
+      const userData = prepareCreateUserInDbPayload(user) as User
       /* @ts-ignore */
-      const result = await createUserInDb(prepareCreateUserInDbPayload(user))
-      console.log({ user, result })
+      const result = await createUserInDb(userData)
+      console.log({ userData, result })
+      dispatch(setUser(userData))
+      navigate('/')
     } catch (error) {
       console.error(error)
     }

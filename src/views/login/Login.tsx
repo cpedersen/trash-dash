@@ -10,13 +10,13 @@ import type { RootState } from '@/store'
 import type { User } from '@/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '@/store/user/userSlice'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 type LoginProps = {}
 
 const Login = (props: LoginProps) => {
   const userState = useSelector((state: RootState) => state.user.user)
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   console.log('user state', userState)
   const [form, setForm] = useState({
     email: '',
@@ -37,12 +37,14 @@ const Login = (props: LoginProps) => {
       const { email, password } = form
       const { user } = await loginUser(email, password)
       if (!user) throw new Error('There was an unexpected problem')
-      /*
-        const { uid } = user
-        const userData = (await fetchUserDetails(uid)) as User
-        console.log({ user, userData })
-        dispatch(setUser(userData))
-      */
+
+      const { uid } = user
+      const userData = (await fetchUserDetails(uid)) as User
+      console.log({ user, userData })
+      dispatch(setUser(userData))
+      navigate('/', {
+        replace: true,
+      })
     } catch (error) {
       console.error(error)
     }
