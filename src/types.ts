@@ -1,7 +1,7 @@
 export type User = {
   id: string
-  displayName?: string
-  email: string
+  displayName?: string | null
+  email: string | null
   emailVerified: boolean
-  photoURL?: string
+  photoURL?: string | null
 }

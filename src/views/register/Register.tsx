@@ -5,7 +5,7 @@ import { createUserInDb } from '@/api/userApi'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/user/userSlice'
 import type { User } from '@/types'
-
+import { UserInfo } from '@firebase/auth-types'
 type RegisterProps = {}
 
 const Register = (props: RegisterProps) => {
@@ -23,7 +23,7 @@ const Register = (props: RegisterProps) => {
     }))
   }
 
-  const prepareCreateUserInDbPayload = (user: firebase.default.User) => {
+  const prepareCreateUserInDbPayload = (user: UserInfo): User => {
     const { uid: id, displayName, email, photoURL } = user
     return {
       id,
@@ -41,7 +41,7 @@ const Register = (props: RegisterProps) => {
       const { email, password } = form
       const { user } = await createUser(email, password)
       if (!user) throw new Error('There was a problem')
-      const userData = prepareCreateUserInDbPayload(user) as User
+      const userData = prepareCreateUserInDbPayload(user)
       /* @ts-ignore */
       const result = await createUserInDb(userData)
       console.log({ userData, result })

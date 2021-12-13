@@ -11,6 +11,7 @@ import type { User } from '@/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '@/store/user/userSlice'
 import { useNavigate } from 'react-router-dom'
+import styles from './login.module.css'
 type LoginProps = {}
 
 const Login = (props: LoginProps) => {
@@ -51,7 +52,7 @@ const Login = (props: LoginProps) => {
   }
 
   return (
-    <div className="w-full max-w-xs mx-auto container">
+    <div className={styles.login}>
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={onLogin}

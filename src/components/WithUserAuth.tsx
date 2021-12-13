@@ -1,4 +1,4 @@
-import { auth, firebase } from '@/api/api'
+import { auth } from '@/api/api'
 import { fetchUserDetails } from '@/api/userApi'
 import { User } from '@/types'
 import { useDispatch } from 'react-redux'

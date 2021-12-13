@@ -1,9 +1,13 @@
 import { auth } from './api'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth'
 
 export const createUser = (email: string, password: string) => {
-  return auth.createUserWithEmailAndPassword(email, password)
+  return createUserWithEmailAndPassword(auth, email, password)
 }
 
 export const loginUser = (email: string, password: string) => {
-  return auth.signInWithEmailAndPassword(email, password)
+  return signInWithEmailAndPassword(auth, email, password)
 }
