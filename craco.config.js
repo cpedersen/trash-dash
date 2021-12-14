@@ -15,7 +15,7 @@ module.exports = {
         require('precss'),
         require('postcss-preset-env'),
         // uncomment if you're using Tailwind
-        // require('tailwindcss')('tailwind.config.js'),
+        require('tailwindcss')('tailwind.config.js'),
         require('postcss-nested'),
         require('tailwindcss'),
         require('autoprefixer'),
