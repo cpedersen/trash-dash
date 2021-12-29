@@ -18,6 +18,7 @@ export const WithUserAuth = (props: WithUserAuthProps) => {
       console.log('user?', user)
       if (!user) {
         dispatch(setUser(null))
+        navigate('/login')
         return
       }
       const { email, displayName, emailVerified, uid: id } = user

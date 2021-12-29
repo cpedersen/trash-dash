@@ -1,6 +1,11 @@
 import Header from './components/Header'
 import Footer from './components/Footer'
 
+/* 
+FullWidthLayout refers to a layout that does not include a nav on 
+the left side of the screen.
+*/
+
 type FullWidthLayoutProps = {
   children: React.ReactNode
 }

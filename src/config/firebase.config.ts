@@ -68,9 +68,11 @@ export const addDoc = <DocumentData>(path: string, data: DocumentData) => {
   return _addDoc(collection(path), data)
 }
 
-export const setDoc = <DocumentData>(path: string, data: DocumentData) => {
-  return _setDoc(doc(path), data)
-}
+export const setDoc =
+  <DocumentData>(path: string, ...pathSegments: string[]) =>
+  (data: DocumentData) => {
+    return _setDoc(doc(path, ...pathSegments), data)
+  }
 
 export const updateDoc = <DocumentData>(path: string, data: DocumentData) => {
   return _updateDoc(doc(path), data)

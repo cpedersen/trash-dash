@@ -1,26 +1,23 @@
 const path = require('path')
+const cracoAlias = require('craco-alias')
+const postcssConfig = require('./postcss.config')
 module.exports = {
-  webpack: {
-    alias: {
-      '@': path.resolve(__dirname, 'src/'),
-    },
-  },
+  // webpack: {
+  //   alias: {
+  //     '@': path.resolve(__dirname, 'src/'),
+  //   },
+  // },
   style: {
-    postcss: {
-      plugins: [
-        require('stylelint')({
-          configFile: 'stylelint.config.js',
-        }),
-        require('postcss-extend'),
-        require('precss'),
-        require('postcss-preset-env'),
-        // uncomment if you're using Tailwind
-        require('tailwindcss')('tailwind.config.js'),
-        require('postcss-nested'),
-        require('tailwindcss'),
-        require('autoprefixer'),
-        require('postcss-reporter'),
-      ],
-    },
+    postcss: postcssConfig,
   },
+  plugins: [
+    {
+      plugin: cracoAlias,
+      options: {
+        source: 'tsconfig',
+        baseUrl: './',
+        tsConfigPath: '.tsconfig.paths.json',
+      },
+    },
+  ],
 }
