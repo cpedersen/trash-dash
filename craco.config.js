@@ -1,6 +1,7 @@
 const path = require('path')
 const cracoAlias = require('craco-alias')
 const postcssConfig = require('./postcss.config')
+
 module.exports = {
   // webpack: {
   //   alias: {
@@ -16,7 +17,7 @@ module.exports = {
       options: {
         source: 'tsconfig',
         baseUrl: './',
-        tsConfigPath: '.tsconfig.paths.json',
+        tsConfigPath: 'tsconfig.paths.json',
       },
     },
   ],

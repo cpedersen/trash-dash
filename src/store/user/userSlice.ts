@@ -5,6 +5,8 @@ export type UserState = {
   user: User | null
 }
 
+//const isLoggedIn = useSelector((state: RootState) => !!state.user.user)
+
 const initialState: UserState = {
   user: null,
 }
