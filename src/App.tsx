@@ -16,7 +16,7 @@ If you have a user, fetch user's profile from Firestore and set it in the usersS
 
 function App() {
   return (
-    <div className="">
+    <div className="bg-green-900">
       <Router>
         <WithUserAuth>
           <Layout>
