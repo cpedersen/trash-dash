@@ -1,43 +1,35 @@
-import { useState } from 'react'
-import logo from './logo.svg'
 import './App.css'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
+import { WithUserAuth } from './components/WithUserAuth'
+import Layout from '@/layout/Layout'
+const Home = lazy(() => import('@/views/home/Home'))
+const Register = lazy(() => import('@/views/register/Register'))
+const Login = lazy(() => import('@/views/login/Login'))
+
+/*
+
+Use onAuthStateChanged from firebase to respond to any user changes, e.g. signin, signup, logout, update, etc.
+If you have a user, fetch user's profile from Firestore and set it in the usersSlice using the setUser action.
+
+*/
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div>
+      <Router>
+        <WithUserAuth>
+          <Layout>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </Suspense>
+          </Layout>
+        </WithUserAuth>
+      </Router>
     </div>
   )
 }

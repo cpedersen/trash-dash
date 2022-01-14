@@ -1,0 +1,3 @@
+.login {
+  @apply w-full max-w-xs mx-auto container;
+}
